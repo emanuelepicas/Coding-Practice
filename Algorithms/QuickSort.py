@@ -17,6 +17,7 @@ def quick_sort(arr: list[int], depth: int = 0) -> list[int]:
     
     # Choose middle element as pivot
     pivot = arr[len(arr)//2]
+    print(f" I want to see the result {arr[len(arr) // 2]}")
     print(f"{indent}Chosen pivot: {pivot}")
     
     # Short way of creating a partition of an array

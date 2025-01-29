@@ -77,55 +77,7 @@ def test_merge_sort():
         print(f"\nFinal sorted array: {result}")
         print("-" * 60)
 
-# Comparison of All Sorting Algorithms
-def compare_sorting_algorithms():
-    """
-    Compare insertion sort, merge sort, and quick sort
-    """
-    from time import time
-    
-    def quick_sort(arr):
-        if len(arr) <= 1:
-            return arr
-        pivot = arr[len(arr)//2]
-        left = [x for x in arr if x < pivot]
-        middle = [x for x in arr if x == pivot]
-        right = [x for x in arr if x > pivot]
-        return quick_sort(left) + middle + quick_sort(right)
-    
-    test_array = [38, 27, 43, 3, 9, 82, 10] * 100  # Larger array for better comparison
-    
-    # Test Insertion Sort
-    start = time()
-    insertion_result = insertion_sort(test_array.copy())
-    insertion_time = time() - start
-    
-    # Test Merge Sort
-    start = time()
-    merge_result = merge_sort(test_array.copy())
-    merge_time = time() - start
-    
-    # Test Quick Sort
-    start = time()
-    quick_result = quick_sort(test_array.copy())
-    quick_time = time() - start
-    
-    print("\nPerformance Comparison:")
-    print(f"Insertion Sort Time: {insertion_time:.6f} seconds")
-    print(f"Merge Sort Time: {merge_time:.6f} seconds")
-    print(f"Quick Sort Time: {quick_time:.6f} seconds")
-
 if __name__ == "__main__":
-    print("Testing Insertion Sort:")
-    for i, arr in enumerate(test_cases, 1):
-        print(f"\nTest Case {i}:")
-        print(f"Original array: {arr}")
-        result = insertion_sort(arr.copy())
-        print(f"Final sorted array: {result}")
-        print("-" * 40)
     
     print("\nTesting Merge Sort:")
     test_merge_sort()
-    
-    print("\nComparing All Sorting Algorithms:")
-    compare_sorting_algorithms()

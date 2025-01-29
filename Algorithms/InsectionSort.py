@@ -1,4 +1,10 @@
 """
+
+Insertion Sort:
+       - Best for small arrays (n < 50)
+       - Good for nearly sorted arrays
+       - In-place sorting (O(1) space)
+       
 Question: Implement insertion sort to sort an array in ascending order.
 Visual explanation of how insertion sort works on array [5,2,4,1,3]:
 

@@ -1,4 +1,10 @@
 """
+
+ Merge Sort:
+       - Consistent performance (always O(n log n))
+       - Stable sort
+       - Requires extra space
+       
 Question: Implement merge sort to sort an array in ascending order.
 Visual explanation of how merge sort works on array [38,27,43,3,9,82,10]:
 

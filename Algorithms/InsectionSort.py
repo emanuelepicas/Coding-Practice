@@ -14,6 +14,7 @@ def insertion_sort(arr: list[int]) -> list[int]:
     # Traverse through 1 to len(arr)
     for i in range(1, len(arr)):
         key = arr[i]  # Current element to be inserted
+        print(f"Current Value {key}")
         j = i - 1     # Index of the last element in sorted portion
         
         # Move elements that are greater than key

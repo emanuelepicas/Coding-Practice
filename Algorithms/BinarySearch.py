@@ -1,177 +1,157 @@
 """
-Binary Tree Level Order Traversal
+Binary Search Algorithm Implementation
 
-Time Complexity: O(n) where n is the number of nodes
-- We visit each node exactly once
+Time Complexity: O(log n)
+- The search space is halved in each step
+- For n elements, it takes log₂(n) steps to find the target
 
-Space Complexity: O(w) where w is the maximum width of the tree
-- In worst case (complete binary tree), the queue can contain up to n/2 nodes
-  (all leaf nodes at the last level)
+Space Complexity: O(1) for iterative, O(log n) for recursive
+- Iterative: Uses only a constant amount of extra space
+- Recursive: Uses call stack space proportional to log n
 
-Example Tree Structure:
-     3
-   /   \
-  9    20
-      /  \
-     15   7
+Example:
+Array: [1, 3, 5, 7, 9, 11, 13, 15]
+Target: 7
 
-Level Order Output: [[3], [9,20], [15,7]]
+Step 1: mid = 3, arr[3] = 7 (Found!)
+[1, 3, 5, 7, 9, 11, 13, 15]
+         ↑
 """
 
-from collections import deque
 from typing import List, Optional
+import time
 
-class TreeNode:
-    def __init__(self, val=0):
-        self.val = val
-        self.left = None
-        self.right = None
-
-def level_order_traversal(root: Optional[TreeNode]) -> List[List[int]]:
-    """
-    Performs level-order traversal of a binary tree using BFS.
-    
-    Args:
-        root: Root node of the binary tree
+class BinarySearch:
+    def iterative_search(self, arr: List[int], target: int) -> int:
+        """
+        Iterative implementation of binary search.
+        Returns index of target if found, -1 otherwise.
         
-    Returns:
-        List of lists containing values at each level
+        Time Complexity: O(log n)
+        Space Complexity: O(1)
+        """
+        left, right = 0, len(arr) - 1
+        print(f"Lenght of the right {right}")
+        steps = 0
         
-    Time Complexity: O(n)
-    Space Complexity: O(w) where w is the maximum width of the tree
-    """
-    if not root:
-        return []
-    
-    result = []
-    queue = deque([root])
-    
-    while queue:
-        level = []
-        level_size = len(queue)  # Number of nodes at current level
-        
-        # Process all nodes at current level
-        for _ in range(level_size):
-            node = queue.popleft()
-            level.append(node.val)
+        while left <= right:
+            steps += 1
+            mid = (left + right) // 2
+            print(f"\nStep {steps}:")
+            print(self._visualization(arr, left, mid, right, target))
             
-            # Add children to queue for next level
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
+            if arr[mid] == target:
+                print(f"\nFound {target} at index {mid} in {steps} steps")
+                return mid
+            elif arr[mid] < target:
+                left = mid + 1
+                print("Target is in right half")
+            else:
+                right = mid - 1
+                print("Target is in left half")
         
-        result.append(level)
-    
-    return result
+        print(f"\nTarget {target} not found after {steps} steps")
+        return -1
 
-def create_tree(values: List[Optional[int]]) -> Optional[TreeNode]:
-    """
-    Creates a binary tree from a list of values.
-    
-    Time Complexity: O(n)
-    Space Complexity: O(n)
-    """
-    if not values:
-        return None
-    
-    root = TreeNode(values[0])
-    queue = deque([root])
-    i = 1
-    
-    while queue and i < len(values):
-        node = queue.popleft()
-        
-        # Create left child
-        if i < len(values) and values[i] is not None:
-            node.left = TreeNode(values[i])
-            queue.append(node.left)
-        i += 1
-        
-        # Create right child
-        if i < len(values) and values[i] is not None:
-            node.right = TreeNode(values[i])
-            queue.append(node.right)
-        i += 1
-    
-    return root
-
-def print_tree(root: Optional[TreeNode]) -> None:
-    """
-    Prints a visual representation of the binary tree.
-    """
-    if not root:
-        print("Empty Tree")
-        return
-    
-    def get_height(node):
-        if not node:
-            return 0
-        return 1 + max(get_height(node.left), get_height(node.right))
-    
-    def print_level(node, level, space):
-        if not node:
-            return
-        if level == 1:
-            print(" " * space + str(node.val), end="")
-        elif level > 1:
-            print_level(node.left, level - 1, space)
-            print_level(node.right, level - 1, space)
-    
-    height = get_height(root)
-    for i in range(1, height + 1):
-        print_level(root, i, height - i)
-        print()
-
-# Test Cases with detailed examples
-test_cases = [
-    # Test Case 1: Normal binary tree
-    {
-        'values': [3,9,20,None,None,15,7],
-        'description': """
-        Normal binary tree:
-             3
-           /   \\
-          9    20
-              /  \\
-             15   7
+    def recursive_search(self, arr: List[int], target: int, 
+                        left: int = 0, right: Optional[int] = None, steps: int = 0) -> int:
         """
-    },
-    # Test Case 2: Complete binary tree
-    {
-        'values': [1,2,3,4,5,6,7],
-        'description': """
-        Complete binary tree:
-             1
-           /   \\
-          2     3
-         / \\   / \\
-        4   5 6   7
+        Recursive implementation of binary search.
+        Returns index of target if found, -1 otherwise.
+        
+        Time Complexity: O(log n)
+        Space Complexity: O(log n) due to recursive call stack
         """
-    }
-]
+        if right is None:
+            right = len(arr) - 1
+        
+        if left > right:
+            print(f"\nTarget {target} not found after {steps} steps")
+            return -1
+        
+        steps += 1
+        mid = (left + right) // 2
+        print(f"\nStep {steps}:")
+        print(self._visualization(arr, left, mid, right, target))
+        
+        if arr[mid] == target:
+            print(f"\nFound {target} at index {mid} in {steps} steps")
+            return mid
+        elif arr[mid] < target:
+            print("Target is in right half")
+            return self.recursive_search(arr, target, mid + 1, right, steps)
+        else:
+            print("Target is in left half")
+            return self.recursive_search(arr, target, left, mid - 1, steps)
+
+    def _visualization(self, arr: List[int], left: int, mid: int, right: int, target: int) -> str:
+        """Helper function to visualize the binary search process."""
+        result = []
+        for i, num in enumerate(arr):
+            if i == mid:
+                result.append(f"[{num}]")  # Current middle element
+            elif left <= i <= right:
+                result.append(f" {num} ")  # Current search range
+            else:
+                result.append(f"({num})")  # Outside search range
+        
+        visual = " ".join(result)
+        status = f"\nSearch range: {left} to {right}"
+        status += f"\nMiddle index: {mid}, Middle value: {arr[mid]}"
+        status += f"\nTarget: {target}"
+        
+        return visual + status
+
+def performance_test(func, arr: List[int], target: int) -> float:
+    """Measure execution time of search function."""
+    start_time = time.time()
+    func(arr, target)
+    end_time = time.time()
+    return end_time - start_time
 
 def run_tests():
+    bs = BinarySearch()
+    
+    # Test cases
+    test_cases = [
+        {
+            'arr': [1, 3, 5, 7, 9, 11, 13, 15],
+            'targets': [7, 15, 1, 10],  # middle, end, start, not found
+            'description': 'Basic test with even length array'
+        },
+        {
+            'arr': [2, 4, 6, 8, 10],
+            'targets': [6, 1],  # middle, not found
+            'description': 'Basic test with odd length array'
+        },
+        {
+            'arr': list(range(0, 100, 2)),  # [0,2,4,...,98]
+            'targets': [48, 99],  # found, not found
+            'description': 'Large array test'
+        }
+    ]
+    
     for i, test_case in enumerate(test_cases, 1):
-        print(f"\nTest Case {i}:")
-        print(test_case['description'])
+        print(f"\nTest Case {i}: {test_case['description']}")
+        print("=" * 60)
         
-        values = test_case['values']
-        root = create_tree(values)
-        
-        print("\nTree Visualization:")
-        print_tree(root)
-        
-        result = level_order_traversal(root)
-        print(f"\nInput values: {values}")
-        print(f"Level order traversal: {result}")
-        
-        # Print level-by-level explanation
-        print("\nLevel-by-level breakdown:")
-        for level_num, level_values in enumerate(result):
-            print(f"Level {level_num}: {level_values}")
-        
-        print("-" * 60)
+        arr = test_case['arr']
+        for target in test_case['targets']:
+            print(f"\nSearching for target: {target}")
+            print("\nIterative Binary Search:")
+            iterative_time = performance_test(
+                lambda x, y: bs.iterative_search(x, y), arr, target
+            )
+            
+            print("\nRecursive Binary Search:")
+            recursive_time = performance_test(
+                lambda x, y: bs.recursive_search(x, y), arr, target
+            )
+            
+            print(f"\nPerformance Comparison:")
+            print(f"Iterative Time: {iterative_time:.6f} seconds")
+            print(f"Recursive Time: {recursive_time:.6f} seconds")
+            print("-" * 60)
 
 if __name__ == "__main__":
     run_tests()
